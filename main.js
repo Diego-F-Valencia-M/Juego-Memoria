@@ -16,6 +16,12 @@ let mostrarMovimientos = document.getElementById('movimientos')
 let mostarAciertos = document.getElementById('aciertos')
 let mostrarTiempo = document.getElementById('t-restante')
 
+let winAudio = new Audio('./sounds/win.wav');
+let loseAudio = new Audio('./sounds/lose.wav');
+let clickAudio = new Audio('./sounds/click.wav');
+let rightAudio = new Audio('./sounds/right.wav');
+let wrongAudio = new Audio('./sounds/wrong.wav');
+
 //generacion de numeros aleatoreos
 let numeros = [1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8];
 numeros = numeros.sort( ()=>{return Math.random() -0.5});
@@ -28,7 +34,8 @@ function contarTiempo(){
     mostrarTiempo.innerHTML = `Tiempo: ${timer} segundos`;
     if(timer == 0){
       clearInterval(tiempoRegresivo)
-      bloquearTarjetas();
+      bloquearTarjetas(numeros);
+      loseAudio.play();
     }
   },1000)
 }
@@ -36,7 +43,7 @@ function contarTiempo(){
 function bloquearTarjetas(){
   for(let i = 0; i<=15; i++){
     let tarjetaBloqueada = document.getElementById(i);
-    tarjetaBloqueada.innerHTML = numeros[i];
+    tarjetaBloqueada.innerHTML = `<img src="./img/${numeros[i]}.png" alt>`;
     tarjetaBloqueada.disabled = true;
   }
 }
@@ -56,6 +63,7 @@ if(temporizador == false){
     tarjeta1 = document.getElementById(id);
     primerResultado = numeros[id];
     tarjeta1.innerHTML = `<img src="./img/${primerResultado}.png" alt>`;
+    clickAudio.play();
 
     //Desabilitar primer boton
     tarjeta1.disabled = true;
@@ -79,14 +87,17 @@ if(temporizador == false){
       //Aumentar aciertos
       aciertos++;
       mostarAciertos.innerHTML = `Aciertos: ${aciertos}`;
+      rightAudio.play();
 
       if(aciertos == 8){
+        winAudio.play();
         clearInterval(tiempoRegresivo)
         mostarAciertos.innerHTML = `Aciertos: ${aciertos} 😱`;
         mostrarTiempo.innerHTML = `Sorprendente 🎉 sólo te demoraste ${timerInicial - timer} segundos 🥳`
         mostrarMovimientos.innerHTML =  `movimientos: ${movimientos} 🤟😎`
       }
     }else{
+      wrongAudio.play();
       //Monstar momentaneamente valores y volver a tapar
       setTimeout(()=>{
         tarjeta1.innerHTML = '   '
