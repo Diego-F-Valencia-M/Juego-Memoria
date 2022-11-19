@@ -42,7 +42,7 @@ function contarTiempo(){
 
 function bloquearTarjetas(){
   for(let i = 0; i<=15; i++){
-    let tarjetaBloqueada = document.getElementById(i);
+    tarjetaBloqueada = document.getElementById(i);
     tarjetaBloqueada.innerHTML = `<img src="./img/${numeros[i]}.png" alt>`;
     tarjetaBloqueada.disabled = true;
   }
@@ -107,10 +107,11 @@ if(temporizador == false){
         tarjetasDestapadas = 0;
       },800);
     }
-
-
   }
-
-
-
 }
+
+//Boton de reinicio
+let refresh = document.getElementById('refresh');
+refresh.addEventListener('click', _ => {
+            location.reload();
+})
